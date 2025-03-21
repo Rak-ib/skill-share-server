@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/user');
+const Notification = require('../models/Notification');
+const sendNotification = global.sendNotification;
+
 
 // Register User
 exports.createUser = async (req, res) => {
@@ -31,12 +34,20 @@ exports.loginUser = async (req, res) => {
         if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ error: 'Invalid credentials' });
         }
-        console.log(user)
+
         // Generate JWT token
-        const token = jwt.sign({ id: user._id,name:user.name, role: user.role }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ id: user._id, name: user.name, role: user.role }, process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRES_IN
         });
-        console.log(token)
+
+        const message = "You logged in";
+        const notification = new Notification({ user: user._id, message });
+        await notification.save();
+
+        // Send notification after a short delay
+        setTimeout(() => {
+            sendNotification(user._id.toString(), message);
+        }, 1000); // 1-second delay
 
         // Set token in HTTP-Only Cookie
         res.cookie('token', token, {

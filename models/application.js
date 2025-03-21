@@ -20,7 +20,7 @@ const ApplicationSchema = new mongoose.Schema(
 
     courseTitle: { type: String, required: true, trim: true }, // Course name/title
 
-    courseDescription: { type: String, required: true, minlength: 50 }, // Ensures a meaningful description
+    courseDescription: { type: String, required: true, minlength: 1 }, // Ensures a meaningful description
 
     price: { type: Number, required: true, min: 0 }, // Course price must be positive
 
