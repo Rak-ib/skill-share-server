@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["student", "teacher", "admin"],
-      default: "student",
+      enum: ["user", "admin"],
+      default: "user",
     },
     profilePicture: {
       type: String, // Store URL if using Cloudinary or similar services
@@ -49,11 +49,10 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false, // Can be updated after email verification
     },
-    mobileNumber: {
+    phoneNumber: {
       type: String,
-      unique: true,
-      trim: true,
-      match: [/^\d{11}$/, "Mobile number must be exactly 11 digits"], // Regex validation
+      default:"01"
+      
     },
     isBanned: { type: Boolean, default: false },
   },

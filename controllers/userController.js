@@ -8,6 +8,7 @@ const sendNotification = global.sendNotification;
 // Register User
 exports.createUser = async (req, res) => {
     try {
+        console.log("came for register")
         const { name, email, password, role } = req.body; // role can be 'student' or 'admin'
         const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -15,10 +16,10 @@ exports.createUser = async (req, res) => {
             name,
             email,
             password: hashedPassword,
-            role: role || 'student' // Default role is 'student'
+            role: role || 'user' // Default role is 'student'
         });
-        await newUser.save();
-        res.status(201).json({ message: "User registered successfully" });
+        const response=await newUser.save();
+        res.status(201).json({ message: "User registered successfully",response });
     } catch (error) {
         console.log(error.message)
         res.status(500).json({ error: error.message });
@@ -28,10 +29,12 @@ exports.createUser = async (req, res) => {
 // Login User and Issue JWT Token
 exports.loginUser = async (req, res) => {
     try {
+        console.log("came for login")
         const { email, password } = req.body;
         const user = await User.findOne({ email });
 
         if (!user || !(await bcrypt.compare(password, user.password))) {
+            console.log('find no one')
             return res.status(401).json({ error: 'Invalid credentials' });
         }
 
@@ -58,6 +61,7 @@ exports.loginUser = async (req, res) => {
 
         res.json({ message: "Login successful", token, role: user.role });
     } catch (error) {
+        console.log("error")
         res.status(500).json({ error: error.message });
     }
 };

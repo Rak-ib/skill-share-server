@@ -1,11 +1,12 @@
 const express = require('express');
-const { createApplication, getApplications } = require('../controllers/applicationController');
-const { verifyToken } = require('../middleware/authMiddleware');
+const { createApplication, getApplications, updateApplications } = require('../controllers/applicationController');
+const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 router.post('/apply',verifyToken, createApplication);
 router.get('/apply',verifyToken, getApplications);
+router.put('/update/:id',verifyAdmin,updateApplications)
 router.get('/',(req,res)=>{
     res.send("application working fine")
 })

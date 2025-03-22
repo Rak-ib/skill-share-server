@@ -9,7 +9,7 @@ router.post('/register', createUser);
 router.get('/logout', logoutUser);
 router.get("/me", verifyToken, getUserProfile);
 router.get('/',(req,res)=>{
-    console.log('okay')
+    // console.log('okay')
     res.send('users is running');
     
 })

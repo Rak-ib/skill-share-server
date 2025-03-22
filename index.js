@@ -23,6 +23,7 @@ connectDB();
 app.use('/users', require('./routes/userRoutes'));
 app.use('/applications', require('./routes/applicationRoutes'));
 app.use('/courses', require('./routes/courseRoutes'));
+app.use('/notifications', require('./routes/notificationRoutes'));
 
 // Root route for testing
 app.get('/', (req, res) => {

@@ -3,6 +3,7 @@ console.log(process.env.MONGO_URI)
 const connectDB = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URI, {
+            dbName: "skill_share",
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
