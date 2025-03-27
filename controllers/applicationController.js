@@ -80,6 +80,37 @@ exports.getApplications = async (req, res) => {
     }
 };
 
+exports.getUsersApplication = async (req, res) => {
+    try {
+        const { email } = req.query;
+        const applications = await Application.find({ email: email });
+        res.status(200).json(applications);
+    } catch (error) {
+        console.log('Error fetching application', error);
+        res.status(500).json({ message: 'Error fetching application' });
+    }
+};
+
+exports.getUserExactApplication = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log("Found the ID: ", id);
+
+        // Correct way to find by ID
+        const application = await Application.findById(id);
+
+        if (!application) {
+            return res.status(404).json({ message: "Application not found" });
+        }
+
+        res.status(200).json(application);
+    } catch (error) {
+        console.log("Error in finding user's specific application: ", error);
+        res.status(500).json({ message: "Error in finding application" });
+    }
+};
+
+
 exports.updateApplications = async (req, res) => {
     try {
         console.log("came to update application status")

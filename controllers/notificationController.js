@@ -11,3 +11,17 @@ exports.getNotification=async(req,res)=>{
         res.status(500).json({ message: "Internal server error" });
     }
 }
+
+exports.updateNotification=async(req,res)=>{
+    try {
+        const userId = req.user.id; // Assuming you have user info in `req.user`
+        await Notification.updateMany(
+            { user: userId, isRead: false },
+            { $set: { isRead: true } }
+        );
+        res.status(200).json({ message: "All notifications marked as read" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
